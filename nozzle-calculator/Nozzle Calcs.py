@@ -1,7 +1,7 @@
 from rocketcea.cea_obj import CEA_Obj
 from math import exp, pi, sqrt, tan, radians
 from numpy import log
-import RP1_prop as rp_prop
+
 
 #Created by Akshay Kulkarni - 02/09/2019
 #This script is intended to determine nozzle and combustion chamber dimensions based on specific inputs.
