@@ -1,7 +1,7 @@
 from rocketcea.cea_obj import CEA_Obj
 from math import exp, pi, sqrt, tan, sin, radians
 from numpy import log
-import RP1_prop as rp_prop
+#import RP1_prop as rp_prop
 import matplotlib.pyplot as plt
 
 #Created by Akshay Kulkarni - 02/17/2019
