@@ -17,8 +17,8 @@ from datetime import date
 R = 1545.32 #ft-lbf/lbmol-R
 g = 32.2 #ft/s^2
 
-input_parameters = ('Chamb_P', 'Eps', 'Mass_flow', 'Mass_Ratio', 'Ambient_P')
-output_parameters = ('Chamb_T', 'R_Exit', 'Throat_A', 'Throat_R', 'C*', 'Exit_Mach', 'Isp', 'Chamb_Cp', \
+input_parameters = ('Chamb_P', 'Optimum_Expansion_Ratio', 'Mass_flow', 'Mass_Ratio', 'Ambient_P')
+output_parameters = ('Chamb_T', 'R_Exit', 'Throat_A', 'Throat_Ratio', 'C*', 'Exit_Mach', 'Isp', 'Chamb_Cp', \
                       'Chamb_Molec_Weight', 'Chamb_Density', 'Exit_V', 'Thrust')
 
 def main(params, df_carry):
