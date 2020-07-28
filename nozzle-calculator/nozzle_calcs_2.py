@@ -127,10 +127,15 @@ def sweep(to_sweep, not_to_sweep):
       to_sweep_arr.append( [(name, el[0])] )
   cartesian_sweep = list(itt.product(*to_sweep_arr))
   dataframe = pd.DataFrame(None, columns= input_parameters + output_parameters)
+  i = 0
+  total = len(cartesian_sweep)
+  increment = total/10
   for sim_element in cartesian_sweep:
+    # print(f"{i}/{t}")
+    print("[" + "=" * int(i / increment) +  " " * int((total - i)/ increment) + "]" +  str(i/total) + "%", end='\r')
     sim_element = tuples_to_dict(sim_element)
-    print(f"Sim element: {tuples_to_dict(sim_element)}")
     dataframe = main(sim_element, dataframe)
+    i+=1
   return dataframe
   
 
