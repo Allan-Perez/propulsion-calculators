@@ -129,10 +129,10 @@ def sweep(to_sweep, not_to_sweep):
   dataframe = pd.DataFrame(None, columns= input_parameters + output_parameters)
   i = 0
   total = len(cartesian_sweep)
-  increment = total/10
+  increment = total/40
   for sim_element in cartesian_sweep:
     # print(f"{i}/{t}")
-    print("[" + "=" * int(i / increment) +  " " * int((total - i)/ increment) + "]" +  str(i/total) + "%", end='\r')
+    print("[" + "=" * int(i / increment) +  " " * int((total - i)/ increment) + "]" +  str((i/total)*100) + "%", end='\n' if i+1 == total else '\r')
     sim_element = tuples_to_dict(sim_element)
     dataframe = main(sim_element, dataframe)
     i+=1
