@@ -1,7 +1,15 @@
 import os
-import numpy as np
 import itertools as itt
 
+
+def linspace(start, end, num):
+  l = []
+  delta = (end - start)/num
+  c = start
+  for i in range(num):
+    l.append(c)
+    c+=delta
+  return l
 def tuples_to_dict(tuple_):
   dict_ = {}
   for el in tuple_:
@@ -17,7 +25,7 @@ def sweep(to_sweep, not_to_sweep):
     name = el[0]
     del el[0]
     if len(el) > 1: 
-      to_sweep_arr.append( [(name, el) for el in np.linspace(*el)] )
+      to_sweep_arr.append( [(name, el) for el in linspace(*el)] )
     else:
       to_sweep_arr.append( [(name, el[0])] )
   cartesian_sweep = list(itt.product(*to_sweep_arr))
