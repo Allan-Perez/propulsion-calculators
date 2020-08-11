@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <stdlib.h>
 using namespace std;
 hybrid_tank hybrid;
 const float nox_pCrit = 72.51f; /* critical pressure, Bar Abs */
@@ -12,6 +13,8 @@ const float nox_tCrit = 309.57f; /* critical temperature, Kelvin (36.42 Centigra
 const float nox_ZCrit = 0.28f; /* critical compressibility factor */
 const float nox_gamma = 1.3; /* average over subcritical range */
 const double delta_time = .001;
+
+const string base_dir = "sweep_data/";
 /* prototypes */
 static double injector_model(double upstream_pressure, double downstream_pressure);
 //static bool first = true;
@@ -278,7 +281,7 @@ pressure */
  = (hybrid.orifice_k2_coefficient / (SQR((hybrid.orifice_number * Ainj)) ) )
  * PASCALS_TO_BAR;
 }
-int main()
+int main(int argc, char *argv[])
 {
 //    cout<<nox_CpL(275)<<endl;
 //    cout<<nox_KL(275)<<endl;
@@ -317,14 +320,29 @@ int main()
 //    Nitrous_tank_liquid();
 //    cout<<hybrid.tank_pressure_bar<<endl;
 //    cout<<"liq: "<<hybrid.tank_liquid_mass<<endl<<"fault; "<<hybrid.hybrid_fault<<endl;
+    if(argc < 8+1){
+      cout << "Please enter valid input values (valid usage below)" << endl;
+      cout << "./tank_emptying_sim [initial_tank_pressure] [tank_V] [orifice_diam] ";
+      cout << "[orifice_num] [chamber_P] [initial_ullage] [orifice_k2_coeff]" << endl;
+      cout << "got " << argc << " params" << endl;
+    }
+    hybrid.initial_tank_pressure = std::strtod(argv[1], NULL); //bar
+    hybrid.tank_volume           = std::strtod(argv[2], NULL); //m3
+    hybrid.orifice_diameter      = std::strtod(argv[3], NULL); //m
+    hybrid.orifice_number        = std::strtod(argv[4], NULL);
+    hybrid.chamber_pressure_bar  = std::strtod(argv[5], NULL);//bar
+    hybrid.initial_ullage        = std::strtod(argv[6], NULL);
+    hybrid.orifice_k2_coefficient= std::strtod(argv[7], NULL);
+    string sim_id = argv[8];
+    sim_id += "/";
+
     int i = 0; //index
 
     /* Initialize data vectors */
     vector<double> pressure_kPa(0);
     vector<double>pressure_psi(0);
     vector<double> mass_flow(0);
-    vector<double>temp(0);
-    vector<double>liquid_mass(0);
+    vector<double>temp(0); vector<double>liquid_mass(0);
     vector<double>vapor_mass(0);
 
     initialise_hybrid_engine();
@@ -359,7 +377,13 @@ int main()
 
     ofstream myout;
     /* data for excel */
-    myout.open("data.csv");
+    myout.open(base_dir + sim_id + "data.csv");
+    if(!myout){
+      // dir doesn't exists => create dir
+      string where = "mkdir "+base_dir+sim_id;
+      system(where.c_str());
+      myout.open(base_dir + sim_id + "data.csv");
+    }
     myout << "time (s), Pressure (kPa), Mass Flow Rate (kg/s), Temperature (K), Liquid Mass (kg), Vapor Mass (kg)" << endl; //x-axis
     for(int index = 0; index < i; index++)
     {
@@ -367,16 +391,22 @@ int main()
     }
     myout.close();
     /* data for gnuplot */
-    myout.open("PvT.dat"); //PvT
+    myout.open(base_dir + sim_id + "PvT.dat"); //PvT
     for(int index = 0; index < i; index++)
     {
         myout << index * .001 << " " << pressure_psi[index] << endl;
     }
     myout.close();
-    myout.open("MvT.dat");
+    myout.open(base_dir + sim_id + "MvT.dat");
     for(int index = 0; index < i; index++)
     {
         myout << index * .001 <<  " " << kg_to_lbs(mass_flow[index]) << endl;
+    }
+    myout.close();
+    myout.open(base_dir+sim_id + "config.txt");
+    for(int index = 0; index < argc; index++)
+    {
+        myout << argv[index] << endl;
     }
     myout.close();
 }
