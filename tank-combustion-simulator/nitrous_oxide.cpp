@@ -6,7 +6,7 @@ const float pCrit = 72.51f; /* critical pressure, Bar Abs */
 const float rhoCrit = 452.0f; /* critical density, kg/m3 */
 const float tCrit = 309.57f; /* critical temperature, Kelvin (36.42 Centigrade) */
 const float ZCrit = 0.28f; /* critical compressibility factor */
-const float gamma = 1.3; /* average over subcritical range */
+//const float gamma = 1.3; /* average over subcritical range */
 /* ranges of function validity */
 const float CENTIGRADE_TO_KELVIN = 273.5;
 const float lower_temp_limit = -90.0 + CENTIGRADE_TO_KELVIN;
